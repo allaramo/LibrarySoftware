@@ -24,7 +24,7 @@ public class Book implements BookInterface {
 		this.stock = stock;
 	}
 	
-	/** Constructor for Book (used to create a new book) 
+	/** Constructor for Book without ID (used to create a new book) 
 	 * @param title
 	 * @param author
 	 * @param stock

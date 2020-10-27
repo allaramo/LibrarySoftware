@@ -9,15 +9,17 @@ import interfaces.ReaderInterface;
 public class Library implements LibraryInterface {
 	
 	private String name;
-	
-	
+	private List<BookInterface> books;
+	private List<ReaderInterface> readers;
 	
 	/** Constructor for the Library
 	 * @param name
 	 */
-	public Library(String name) {
+	public Library(String name, List<BookInterface> books, List<ReaderInterface> readers) {
 		super();
 		this.name = name;
+		this.books = books;
+		this.readers = readers;
 	}
 
 	@Override

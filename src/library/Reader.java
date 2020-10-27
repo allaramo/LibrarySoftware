@@ -8,12 +8,22 @@ public class Reader implements ReaderInterface{
 	private String name;
 	private String address;
 
-	/** Constructor for Reader
+	/** Constructor for Reader with ID (used when reading file)
 	 * @param id
 	 * @param name
 	 * @param address	
 	 */
 	public Reader(int id, String name, String address) {		
+		this.id = id;
+		this.name = name;
+		this.address = address;
+	}
+	
+	/** Constructor for Reader without ID (used to create new Reader)
+	 * @param name
+	 * @param address	
+	 */
+	public Reader(String name, String address) {		
 		this.id = counter++;
 		this.name = name;
 		this.address = address;
@@ -53,5 +63,17 @@ public class Reader implements ReaderInterface{
 	public void setAddress(String address) {
 		// TODO Auto-generated method stub
 		this.address = address;
+	}
+
+	@Override
+	public int getCounter() {
+		// TODO Auto-generated method stub
+		return Reader.counter;
+	}
+
+	@Override
+	public void setCounter(int counter) {
+		// TODO Auto-generated method stub
+		Reader.counter = counter;
 	}
 }

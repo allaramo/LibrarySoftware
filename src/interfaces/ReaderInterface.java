@@ -16,6 +16,20 @@ public interface ReaderInterface {
 	public void setId(int id);
 	
 	/**
+	 * Returns the current counter 
+	 * 
+	 * @return the counter of the class
+	 */
+	public int getCounter();
+	
+	/**
+	 * Sets the counter for the id
+	 * 
+	 * @param the counter of the class
+	 */
+	public void setCounter(int counter);
+	
+	/**
 	 * Returns the name of the reader
 	 * 
 	 * @return 	the name of the reader

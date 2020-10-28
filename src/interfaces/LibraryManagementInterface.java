@@ -5,7 +5,7 @@ public interface LibraryManagementInterface {
 	 * Shows the menu of the interface.
 	 * 	 
 	 */	
-	public void menuLibrary();
+	public void menuLibrary(LibraryInterface library);
 	
 	/**
 	 * Setups the library and reads the files.

@@ -3,3 +3,5 @@
 3:The Hunting Party:Lucy Foley:1
 4:The Guest List:Lucy Foley:3
 5:The Hunger Games:Suzanne Collins:1
+6:The Element:Allaramo:1
+7:The Element:Alan Arango:1

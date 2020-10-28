@@ -13,7 +13,8 @@ public class Reader implements ReaderInterface{
 	 * @param name
 	 * @param address	
 	 */
-	public Reader(int id, String name, String address) {		
+	public Reader(int id, String name, String address) {	
+		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
@@ -23,7 +24,8 @@ public class Reader implements ReaderInterface{
 	 * @param name
 	 * @param address	
 	 */
-	public Reader(String name, String address) {		
+	public Reader(String name, String address) {	
+		super();
 		this.id = counter++;
 		this.name = name;
 		this.address = address;
@@ -76,4 +78,10 @@ public class Reader implements ReaderInterface{
 		// TODO Auto-generated method stub
 		Reader.counter = counter;
 	}
+
+	@Override
+	public String toString() {
+		return "Reader [id=" + id + ", name=" + name + ", address=" + address + "]";
+	}
+	
 }

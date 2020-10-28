@@ -31,9 +31,9 @@ public class LibraryManagement implements LibraryManagementInterface{
 	}
 	
 	@Override
-	public void menuLibrary() {
+	public void menuLibrary(LibraryInterface library) {
 		// TODO Auto-generated method stub
-		Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);	
 		int option = 0;
 		do {
 			//creating main menu
@@ -64,6 +64,18 @@ public class LibraryManagement implements LibraryManagementInterface{
 							suboption1 = sc.nextInt();
 							switch(suboption1) {
 							case 1:
+								sc.nextLine();
+								System.out.println("Input the author: (input * for all authors)");
+								String author = sc.nextLine();
+								System.out.println("Input the title: (input * for all titles)");
+								String title = sc.nextLine();
+								System.out.println("Alphabetical order? Y/N ");
+								String sorted = sc.nextLine().toUpperCase();																
+								boolean sort = false;
+								if(sorted.equals("Y")) {
+									sort = true;
+								}
+								library.getBooks(author, title, sort);
 								break;
 							case 2:
 								break;
@@ -97,6 +109,16 @@ public class LibraryManagement implements LibraryManagementInterface{
 							suboption2 = sc.nextInt();
 							switch(suboption2) {
 							case 1:
+								sc.nextLine();
+								System.out.println("Input the name: (input * for all readers)");
+								String reader = sc.nextLine();								
+								System.out.println("Alphabetical order? Y/N ");
+								String sorted = sc.nextLine().toUpperCase();																
+								boolean sort = false;
+								if(sorted.equals("Y")) {
+									sort = true;
+								}													
+								library.getReaders(reader, sort);
 								break;
 							case 2:
 								break;
@@ -216,9 +238,9 @@ public class LibraryManagement implements LibraryManagementInterface{
 				String[] infoReader = nextLineReader.split(":");
 				int id = Integer.parseInt(infoReader[0]);
 				String readerName = infoReader[1];
-				String address = infoReader[2];				
+				String address = infoReader[2];
 				//creating new object
-				ReaderInterface reader = new Reader(id,readerName, address);
+				ReaderInterface reader = new Reader(id, readerName, address);
 				//adding object to collection
 				readers.add(reader);		
 				//reading next line

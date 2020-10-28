@@ -16,7 +16,7 @@ public class LibrarySoftware {
 		lm.printHeader("Welcome to " + l.getName());
 		
 		//printing menu
-		lm.menuLibrary();
+		lm.menuLibrary(l);
 	}
 
 }

@@ -69,17 +69,29 @@ public class LibraryManagement implements LibraryManagementInterface{
 								String author = sc.nextLine();
 								System.out.println("Input the title: (input * for all titles)");
 								String title = sc.nextLine();
-								System.out.println("Alphabetical order? Y/N ");
-								String sorted = sc.nextLine().toUpperCase();																
-								boolean sort = false;
-								if(sorted.equals("Y")) {
-									sort = true;
-								}
-								library.getBooks(author, title, sort);
+								System.out.println("Input the field by which you want to sort: (TITLE, AUTHOR, NONE)");
+								String sort = sc.nextLine().toUpperCase();								
+								System.out.println(library.getBooks(author, title, sort));
 								break;
 							case 2:
 								break;
 							case 3:
+								sc.nextLine();
+								System.out.println("Input the title: ");
+								String bTitle = sc.nextLine();
+								System.out.println("Input the author: ");
+								String bAuthor = sc.nextLine();
+								System.out.println("Input the stock available: ");
+								int bStock = 1;
+								if(sc.hasNextInt()) {
+									bStock = sc.nextInt();
+								}								
+								int rID = library.addBook(bTitle, bAuthor, bStock);
+								if(rID>0) {
+									System.out.println("Book added succesfully. ID: " + rID);
+								} else {
+									printError("Book not added. Try Again.");
+								}
 								break;
 							case 4:
 								break;
@@ -112,17 +124,24 @@ public class LibraryManagement implements LibraryManagementInterface{
 								sc.nextLine();
 								System.out.println("Input the name: (input * for all readers)");
 								String reader = sc.nextLine();								
-								System.out.println("Alphabetical order? Y/N ");
-								String sorted = sc.nextLine().toUpperCase();																
-								boolean sort = false;
-								if(sorted.equals("Y")) {
-									sort = true;
-								}													
-								library.getReaders(reader, sort);
+								System.out.println("Input the field by which you want to sort: (ID, NAME, NONE)");
+								String sort = sc.nextLine().toUpperCase();	
+								System.out.println(library.getReaders(reader, sort));
 								break;
 							case 2:
 								break;
 							case 3:
+								sc.nextLine();
+								System.out.println("Input the name: ");
+								String rName = sc.nextLine();
+								System.out.println("Input the address: ");
+								String rAddress = sc.nextLine();
+								int rID = library.addReader(rName, rAddress);
+								if(rID>0) {
+									System.out.println("Reader added succesfully. ID: " + rID);
+								} else {
+									printError("Reader not added. Try Again.");
+								}
 								break;
 							case 4:
 								break;
@@ -155,7 +174,7 @@ public class LibraryManagement implements LibraryManagementInterface{
 								break;
 							case 2:
 								break;
-							case 3:
+							case 3:								
 								break;
 							case 4:
 								break;
@@ -220,10 +239,10 @@ public class LibraryManagement implements LibraryManagementInterface{
 			frBook.close();	
 			bBook = true;
 		} catch (FileNotFoundException e){
-			System.out.println("> Error: Book's File not found");
+			printError("Book's File not found");
 			return null;
 		} catch (IOException e){
-			System.out.println("Error: " + e.toString());
+			printError(e.toString());
 			return null;
 		}
 		
@@ -251,10 +270,10 @@ public class LibraryManagement implements LibraryManagementInterface{
 			frReader.close();	
 			bReader = true;
 		} catch (FileNotFoundException e){
-			System.out.println("Error: Book's File not found");
+			printError("Readers's File not found");			
 			return null;
 		} catch (IOException e){
-			System.out.println("Error: " + e.toString());
+			printError(e.toString());
 			return null;
 		}
 		
@@ -262,7 +281,7 @@ public class LibraryManagement implements LibraryManagementInterface{
 			LibraryInterface library = new Library(name,books,readers);
 			return library;
 		} else {
-			System.out.println("Error: Library wasn't created");
+			printError("Library wasn't created");
 			return null;
 		}			
 	}

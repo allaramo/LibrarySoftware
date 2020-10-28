@@ -13,7 +13,7 @@ public interface LibraryInterface {
 	 * @param sortB		If true sorts books in alphabetical order
 	 * @return			List of all books that match the search criteria with sorting or not
 	 */
-	public List<BookInterface> getBooks(String author, String book, boolean sort);
+	public List<BookInterface> getBooks(String author, String book, String sort);
 	
 	/**
 	 * Return a list of readers. 
@@ -22,7 +22,7 @@ public interface LibraryInterface {
 	 * @param sort		If true sorts readers in alphabetical order
 	 * @return			List of all readers that match the search criteria with sorting or not
 	 */
-	public List<ReaderInterface> getReaders(String reader, boolean sort);
+	public List<ReaderInterface> getReaders(String reader, String sort);
 	
 	/**
 	 * Return the name of the library
@@ -71,4 +71,21 @@ public interface LibraryInterface {
 	 * @return					List of all books borrowed by the reader
 	 */
 	public List<BookInterface> booksBorrowed(ReaderInterface reader);
+	
+	/**
+	 * Adds a new Reader to the file
+	 * @param name				Name of the reader
+	 * @param address			Address of the reader
+	 * @return					The ID of the new reader
+	 */
+	public int addReader(String name, String address);
+	
+	/**
+	 * Adds a new Reader to the file
+	 * @param title				Title name of the book
+	 * @param author			Name of the author
+	 * @param stock				Number of books available for borrowing
+	 * @return					The ID of the new reader
+	 */
+	public int addBook(String title, String author, int stock);
 }

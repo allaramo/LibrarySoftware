@@ -1,6 +1,4 @@
-1:Alan Arango:Wadelai Road, Dublin 11
-2:Velimir Eldic:Yeallow Meadows, Dublin 22
-3:Bernarda Eldic:Yeallow Meadows, Dublin 22
-4:Christofer Herrera:South Circular Road, Dublin 8
-5:David Mc Mahon:Glasnevin North, Dublin 11
-6:Alan Arango:Drumcondra, Dublin 3
+1:Alan Arango:Dublin 11
+2:Gabriel Monroy:Dublin 3
+3:Alan Arango:Dublin 22
+4:Miriam Monroy:Dublin 2

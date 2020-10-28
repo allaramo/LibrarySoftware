@@ -4,7 +4,7 @@ import interfaces.ReaderInterface;
 
 public class Reader implements ReaderInterface{
 	private int id;
-	private static int counter;
+	private static int counter = 1;
 	private String name;
 	private String address;
 
@@ -18,6 +18,9 @@ public class Reader implements ReaderInterface{
 		this.id = id;
 		this.name = name;
 		this.address = address;
+		if(Reader.counter<=id) {
+			Reader.counter = id+1;
+		}		
 	}
 	
 	/** Constructor for Reader without ID (used to create new Reader)
@@ -81,7 +84,7 @@ public class Reader implements ReaderInterface{
 
 	@Override
 	public String toString() {
-		return "Reader [id=" + id + ", name=" + name + ", address=" + address + "]";
+		return "\n" + id + ", " + name + ", " + address;
 	}
 	
 }

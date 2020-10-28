@@ -5,7 +5,7 @@ import interfaces.BookInterface;
 public class Book implements BookInterface {
 
 	private int id;
-	private static int counter;
+	private static int counter = 1;
 	private String title;
 	private String author;
 	private int stock;
@@ -22,6 +22,9 @@ public class Book implements BookInterface {
 		this.title = title;
 		this.author = author;
 		this.stock = stock;
+		if(Book.counter<=id) {
+			Book.counter = id+1;
+		}	
 	}
 	
 	/** Constructor for Book without ID (used to create a new book) 
@@ -87,7 +90,7 @@ public class Book implements BookInterface {
 
 	@Override
 	public String toString() {
-		return "Book [id=" + id + ", title=" + title + ", author=" + author + ", stock=" + stock + "]";
+		return "\n" + id + ", " + title + ", " + author + ", " + stock;	
 	}
 
 	@Override

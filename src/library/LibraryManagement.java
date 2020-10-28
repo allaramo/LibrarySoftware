@@ -54,7 +54,7 @@ public class LibraryManagement implements LibraryManagementInterface{
 						//creating sub menu
 						printHeader("BOOKS MENU");	
 						System.out.println("1.Search a Book");
-						System.out.println("2.Sort a Book");
+						System.out.println("2.Sort Books");
 						System.out.println("3.Add a Book");
 						System.out.println("4.Return");
 						System.out.println("--------------------------");
@@ -69,11 +69,15 @@ public class LibraryManagement implements LibraryManagementInterface{
 								String author = sc.nextLine();
 								System.out.println("Input the title: (input * for all titles)");
 								String title = sc.nextLine();
-								System.out.println("Input the field by which you want to sort: (TITLE, AUTHOR, NONE)");
+								System.out.println("Input the field by which you want to sort: (ID, TITLE, AUTHOR, NONE)");
 								String sort = sc.nextLine().toUpperCase();								
 								System.out.println(library.getBooks(author, title, sort));
 								break;
 							case 2:
+								sc.nextLine();
+								System.out.println("Input the field by which you want to sort: (ID, TITLE, AUTHOR, NONE)");
+								String bookSort = sc.nextLine().toUpperCase();		
+								System.out.println(library.sortBooks(bookSort));
 								break;
 							case 3:
 								sc.nextLine();
@@ -111,7 +115,7 @@ public class LibraryManagement implements LibraryManagementInterface{
 						//creating sub menu
 						printHeader("READERS MENU");	
 						System.out.println("1.Search a Reader");
-						System.out.println("2.Sort a Reader");
+						System.out.println("2.Sort Readers");
 						System.out.println("3.Add a Reader");
 						System.out.println("4.Return");
 						System.out.println("--------------------------");
@@ -129,6 +133,10 @@ public class LibraryManagement implements LibraryManagementInterface{
 								System.out.println(library.getReaders(reader, sort));
 								break;
 							case 2:
+								sc.nextLine();
+								System.out.println("Input the field by which you want to sort: (ID, NAME, NONE)");
+								String readerSort = sc.nextLine().toUpperCase();		
+								System.out.println(library.sortReaders(readerSort));								
 								break;
 							case 3:
 								sc.nextLine();

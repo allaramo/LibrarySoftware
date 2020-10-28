@@ -88,4 +88,40 @@ public interface LibraryInterface {
 	 * @return					The ID of the new reader
 	 */
 	public int addBook(String title, String author, int stock);
+	
+	/**
+	 * Sorts the Books by id, author or title and saves it
+	 * @param sort				Field by which books will be sorted
+	 * @return					The new List of Books sorted
+	 */
+	public List<BookInterface> sortBooks(String sort);
+	
+	/**
+	 * Sorts the Readers by id or name and saves it
+	 * @param sort				Field by which readers will be sorted
+	 * @return					The new List of Readers sorted
+	 */
+	public List<ReaderInterface> sortReaders(String sort);
+	
+	/**
+	 * Sorts the Book by id, author or title without saving on a file
+	 * @param List<BookInterface> 	List to be sorted
+	 * @param sort					Field by which books will be sorted
+	 * @return						The new List of Books sorted
+	 */
+	public List<BookInterface> insertionSortBooks(List<BookInterface> b, String sort);
+	
+	/**
+	 * Sorts the Reader by id or name without saving on a file
+	 * @param List<ReaderInterface> 	List to be sorted
+	 * @param sort						Field by which readers will be sorted
+	 * @return							The new List of Readers sorted
+	 */
+	public List<ReaderInterface> insertionSortReaders(List<ReaderInterface> r, String sort);
+	
+	/**
+	 * Prints a text in console for error handling
+	 * @param text	Text to Print
+	 */
+	public void printError(String text);
 }

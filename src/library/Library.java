@@ -27,6 +27,10 @@ public class Library implements LibraryInterface {
 		this.readers = readers;
 	}
 
+	/**
+	 * Gets all the books filtered by author, title, both or without filters.
+	 * It also allows to sort by id, title and author
+	 */
 	@Override
 	public List<BookInterface> getBooks(String author, String title, String sort) {
 		//searching algorithm
@@ -60,20 +64,35 @@ public class Library implements LibraryInterface {
 		return insertionSortBooks(search, sort);
 	}
 	
+	/**
+	 * Sorting algorithm for Books
+	 */
+	@Override
 	public List<BookInterface> insertionSortBooks(List<BookInterface> b, String sort) {
-		if(sort.equals("AUTHOR") || sort.equals("TITLE")) {
+		//sorts only if the user inputs author, title or id
+		if(sort.equals("AUTHOR") || sort.equals("TITLE") || sort.equals("ID")) {
 			for(int i=1; i<b.size();i++) {
 				BookInterface keyElement = b.get(i);
 				int position = i;
+				//sort by author
 				if(sort.equals("AUTHOR")) {
 					while(position>0 && b.get(position-1).getAuthor().toUpperCase().compareTo(keyElement.getAuthor().toUpperCase()) > 0) {
 						b.set(position, b.get(position-1));
 						position--;
 					}
 				} else {
-					while(position>0 && b.get(position-1).getTitle().toUpperCase().compareTo(keyElement.getTitle().toUpperCase()) > 0) {
-						b.set(position, b.get(position-1));
-						position--;
+					//sort by title
+					if(sort.equals("TITLE")) {
+						while(position>0 && b.get(position-1).getTitle().toUpperCase().compareTo(keyElement.getTitle().toUpperCase()) > 0) {
+							b.set(position, b.get(position-1));
+							position--;
+						}
+					} else {
+						//sort by id
+						while(position>0 && b.get(position-1).getId() > keyElement.getId()) {
+							b.set(position, b.get(position-1));
+							position--;
+						}
 					}
 				}
 				b.set(position, keyElement);
@@ -81,7 +100,37 @@ public class Library implements LibraryInterface {
 		}		
 		return b;
 	}
+	
+	/**
+	 * Sorts the Books by id, author and title but saves the sort into the file
+	 */
+	@Override
+	public List<BookInterface> sortBooks(String sort){
+		books = insertionSortBooks(books, sort);
+		try {
+			//Opening Books File
+			FileWriter fwBook = new FileWriter("books.txt");
+			BufferedWriter bwBook = new BufferedWriter(fwBook);		
+			//Writing text
+			for(BookInterface b : books) {
+				bwBook.write(b.getId()+":"+b.getTitle()+":"+b.getAuthor()+":"+b.getStock());
+				bwBook.newLine();
+			}			
+			//closing buffer and file;
+			bwBook.close();
+			fwBook.close();		
+		} catch (FileNotFoundException e){
+			printError("Book's File not found");
+		} catch (IOException e){
+			printError(e.toString());
+		}
+		return books;
+	}
 
+	/**
+	 * Gets all the readers filtered or not by name.
+	 * It also allows to sort by id and name
+	 */
 	@Override
 	public List<ReaderInterface> getReaders(String reader, String sort) {
 		//searching algorithm
@@ -101,6 +150,10 @@ public class Library implements LibraryInterface {
 		return insertionSortReaders(search, sort);
 	}
 	
+	/**
+	 * Sorting algorithm for Readers
+	 */
+	@Override
 	public List<ReaderInterface> insertionSortReaders(List<ReaderInterface> r, String sort) {
 		if(sort.equals("ID") || sort.equals("NAME")) {
 			for(int i=1; i<r.size();i++) {
@@ -123,11 +176,43 @@ public class Library implements LibraryInterface {
 		return r;
 	}
 
+	/**
+	 * Sorts the Readers by id or name but saves the sort into the file
+	 */
+	@Override
+	public List<ReaderInterface> sortReaders(String sort){
+		readers = insertionSortReaders(readers, sort);
+		try {
+			//Opening Readers File
+			FileWriter fwReader = new FileWriter("readers.txt");
+			BufferedWriter bwReader = new BufferedWriter(fwReader);		
+			//Writing text
+			for(ReaderInterface r : readers) {
+				bwReader.write(r.getId()+":"+r.getName()+":"+r.getAddress());
+				bwReader.newLine();
+			}			
+			//closing buffer and file;
+			bwReader.close();
+			fwReader.close();		
+		} catch (FileNotFoundException e){
+			printError("Reader's File not found");
+		} catch (IOException e){
+			printError(e.toString());
+		}
+		return readers;
+	}
+	
+	/**
+	 * Returns the name of the library
+	 */
 	@Override
 	public String getName() {		
 		return name;
 	}
 
+	/**
+	 * Sets the name of the library
+	 */
 	@Override
 	public void setName(String name) {
 		this.name = name;
@@ -157,6 +242,9 @@ public class Library implements LibraryInterface {
 		return null;
 	}
 
+	/**
+	 * Inserts a new Reader into the list and into the file
+	 */
 	@Override
 	public int addReader(String name, String address) {
 		ReaderInterface r = new Reader(name,address);
@@ -180,18 +268,26 @@ public class Library implements LibraryInterface {
 		return 0;
 	}
 
+	/**
+	 * Prints in console an error
+	 * @param text	Error text to print
+	 */
+	@Override
 	public void printError(String text) {
 		System.out.println("--------------------------");
 		System.out.println("> Error: " + text);
 		System.out.println("--------------------------");
 	}
 
+	/**
+	 * Inserts a new Book into the list and into the file
+	 */
 	@Override
 	public int addBook(String title, String author, int stock) {
 		BookInterface b = new Book(title,author,stock);
 		books.add(b);
 		try {
-			//Opening Reader File
+			//Opening Book File
 			FileWriter fwBook = new FileWriter("books.txt",true);
 			BufferedWriter bwBook = new BufferedWriter(fwBook);		
 			//Appending text

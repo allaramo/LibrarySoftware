@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.BookInterface;
+import interfaces.BorrowingInterface;
 import interfaces.LibraryInterface;
 import interfaces.LibraryManagementInterface;
 import interfaces.ReaderInterface;
@@ -30,9 +31,49 @@ public class LibraryManagement implements LibraryManagementInterface{
 		System.out.println("--------------------------");
 	}
 	
+	public void bookBorrowReturn(Scanner sc, LibraryInterface library, String action) {
+		sc.nextLine();
+		System.out.println("Input Book's Title");								
+		String bTitle = sc.nextLine();
+		System.out.println("Input Author's Name");								
+		String bAuthor = sc.nextLine();
+		BookInterface book;
+		List<BookInterface> searchBook = library.getBooks(bAuthor, bTitle, "");
+		if(searchBook.size()>0) {
+			book = searchBook.get(0);
+			if((!library.checkStock(book) && action.equals("borrow"))) {
+				printError("Book not available for borrowing");					
+			} else {
+				System.out.println("Input Reader's ID or Name");
+				String rName = sc.nextLine();
+				ReaderInterface reader;
+				List<ReaderInterface> searchReader = library.getReaders(rName, "");
+				if(searchReader.size()>0) {
+					reader = searchReader.get(0);
+					if(action.equals("borrow")) {
+						if(library.borrowBook(book, reader)) {
+							System.out.println("Borrowing registered successfully");
+						} else {
+							printError("Borrowing not possible. Try again.");
+						}
+					} else {
+						if(library.returnBook(book, reader)) {
+							System.out.println("Book returned successfully");
+						} else {
+							printError("Return of the Book not possible. Try again.");
+						}
+					}					
+				} else {										
+					printError("Reader not found");
+				}
+			}
+		} else {
+			printError("Book not found: " + bTitle + ", " + bAuthor);									
+		}	
+	}
+	
 	@Override
 	public void menuLibrary(LibraryInterface library) {
-		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);	
 		int option = 0;
 		do {
@@ -176,11 +217,13 @@ public class LibraryManagement implements LibraryManagementInterface{
 						System.out.print("> Select an option: ");
 						//checking valid options
 						if(sc.hasNextInt()){
-							suboption2 = sc.nextInt();
+							suboption3 = sc.nextInt();
 							switch(suboption3) {
 							case 1:
+								bookBorrowReturn(sc, library, "borrow");							
 								break;
 							case 2:
+								bookBorrowReturn(sc, library, "return");
 								break;
 							case 3:								
 								break;
@@ -217,10 +260,12 @@ public class LibraryManagement implements LibraryManagementInterface{
 		// TODO Auto-generated method stub	
 		boolean bBook = false;
 		boolean bReader = false;
+		boolean bBorrowing = false;
 		
 		//creating collections
 		List<BookInterface> books = new ArrayList<>();
 		List<ReaderInterface> readers = new ArrayList<>();
+		List<BorrowingInterface> borrowings = new ArrayList<>();
 		
 		try {
 			//Reading Book File
@@ -285,8 +330,40 @@ public class LibraryManagement implements LibraryManagementInterface{
 			return null;
 		}
 		
-		if(bBook && bReader) {
-			LibraryInterface library = new Library(name,books,readers);
+		try {
+			//Reading Borrowings File
+			FileReader frBorrowing = new FileReader("borrowings.txt");
+			BufferedReader brBorrowing = new BufferedReader(frBorrowing);				
+			//reading first line
+			String nextLineBorrowing = brBorrowing.readLine();
+			while(nextLineBorrowing != null) {
+				//reading information
+				String[] infoBorrowing = nextLineBorrowing.split(":");
+				int id = Integer.parseInt(infoBorrowing[0]);
+				int idBook = Integer.parseInt(infoBorrowing[1]);
+				int idReader = Integer.parseInt(infoBorrowing[2]);
+				String status = infoBorrowing[3];
+				//creating new object
+				BorrowingInterface borrowing = new Borrowing(id, idBook, idReader, status);
+				//adding object to collection
+				borrowings.add(borrowing);	
+				//reading next line
+				nextLineBorrowing = brBorrowing.readLine();
+			}	
+			//closing buffer and file
+			brBorrowing.close();
+			frBorrowing.close();	
+			bBorrowing = true;
+		} catch (FileNotFoundException e){
+			printError("Borrowing's File not found");			
+			return null;
+		} catch (IOException e){
+			printError(e.toString());
+			return null;
+		}
+		
+		if(bBook && bReader && bBorrowing) {
+			LibraryInterface library = new Library(name,books,readers,borrowings);
 			return library;
 		} else {
 			printError("Library wasn't created");

@@ -1,13 +1,16 @@
 package library;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.BookInterface;
+import interfaces.BorrowingInterface;
 import interfaces.LibraryInterface;
 import interfaces.ReaderInterface;
 
@@ -16,15 +19,17 @@ public class Library implements LibraryInterface {
 	private String name;
 	private List<BookInterface> books;
 	private List<ReaderInterface> readers;
+	private List<BorrowingInterface> borrowings;
 	
 	/** Constructor for the Library
 	 * @param name
 	 */
-	public Library(String name, List<BookInterface> books, List<ReaderInterface> readers) {
+	public Library(String name, List<BookInterface> books, List<ReaderInterface> readers, List<BorrowingInterface> borrowings) {
 		super();
 		this.name = name;
 		this.books = books;
 		this.readers = readers;
+		this.borrowings = borrowings;
 	}
 
 	/**
@@ -218,22 +223,170 @@ public class Library implements LibraryInterface {
 		this.name = name;
 	}
 
+	/**
+	 * Checks the stock of a Book to see if it is available for borrowing
+	 */
 	@Override
 	public boolean checkStock(BookInterface book) {
-		// TODO Auto-generated method stub
+		if(book.getStock()>0) {
+			return true;
+		}
 		return false;
 	}
 
+	/**
+	 * Registers the borrowing and saves it on a File. Updates the stock in the Book's file
+	 */
 	@Override
 	public boolean borrowBook(BookInterface book, ReaderInterface reader) {
-		// TODO Auto-generated method stub
-		return false;
+		BorrowingInterface b = new Borrowing(book.getId(),reader.getId(),"borrowed");
+		borrowings.add(b);
+		//updates the stock in the list
+		for(BookInterface bb : books) {
+			if(bb.getId()==book.getId()) {
+				bb.setStock(bb.getStock()-1);
+				break;
+			}
+		}
+		
+		boolean writeBook = false;
+		boolean writeBorrowing = false;
+		//writes in files
+		try {
+			//Opening Borrowing File
+			FileWriter fwBorrowing = new FileWriter("borrowings.txt",true);
+			BufferedWriter bwBorrowing = new BufferedWriter(fwBorrowing);		
+			//Appending text
+			bwBorrowing.append(b.getId()+":"+b.getIdBook()+":"+b.getIdReader()+":"+b.getStatus());
+			bwBorrowing.newLine();
+			//closing buffer and file;
+			bwBorrowing.close();
+			fwBorrowing.close();
+			writeBorrowing = true;
+		} catch (FileNotFoundException e){
+			printError("Borrowing's File not found");
+		} catch (IOException e){
+			printError(e.toString());
+		}
+		        
+        try
+        {
+        	//Reading Book File
+			FileReader frBook = new FileReader("books.txt");
+			BufferedReader brBook = new BufferedReader(frBook);	 
+            String oldContent = "";                     
+            String line = brBook.readLine();             
+            while (line != null) 
+            {
+            	oldContent = oldContent + line + System.lineSeparator();                 
+                line = brBook.readLine();
+            }          
+            String oldLine = String.valueOf(book.getId()) + ":" + book.getTitle() + ":" + book.getAuthor() + ":";
+            String newLine = oldLine + String.valueOf(book.getStock());
+            oldLine = oldLine + String.valueOf(book.getStock()+1);
+            String newContent = oldContent.replaceFirst(oldLine,newLine);
+            frBook.close();
+            FileWriter fwBook = new FileWriter("books.txt"); 
+            fwBook.write(newContent);
+            brBook.close();
+            fwBook.close();
+            writeBook = true;
+        } catch (FileNotFoundException e){
+			printError("Book's File not found");
+		} catch (IOException e){
+			printError(e.toString());
+		}	
+		
+		if(writeBook && writeBorrowing) {
+			return true;
+		}
+		return false;	
 	}
 
+	/**
+	 * Registers the return of a book and saves it on a File. Updates the stock in the Book's file
+	 */
 	@Override
 	public boolean returnBook(BookInterface book, ReaderInterface reader) {
-		// TODO Auto-generated method stub
-		return false;
+		BorrowingInterface borrowing = null;
+		for(BorrowingInterface b : borrowings) {
+			if(b.getIdBook() == book.getId() && b.getIdReader() == reader.getId() && b.getStatus().equals("borrowed")) {
+				b.setStatus("returned");
+				borrowing = b;
+				break;
+			}
+		}		
+		//updates the stock in the list
+		for(BookInterface bb : books) {
+			if(bb.getId()==book.getId()) {
+				bb.setStock(bb.getStock()+1);
+				break;
+			}
+		}
+		
+		boolean writeBook = false;
+		boolean writeBorrowing = false;
+		//writes in files
+		try
+        {
+        	//Reading Borrowings File
+			FileReader frBorrowing = new FileReader("borrowings.txt");
+			BufferedReader brBorrowing = new BufferedReader(frBorrowing);	 
+            String oldContent = "";                     
+            String line = brBorrowing.readLine();             
+            while (line != null) 
+            {
+            	oldContent = oldContent + line + System.lineSeparator();                 
+                line = brBorrowing.readLine();
+            }          
+            String oldLine = String.valueOf(borrowing.getId()) + ":" + String.valueOf(borrowing.getIdBook()) + ":" + String.valueOf(borrowing.getIdReader()) + ":";
+            String newLine = oldLine + "returned";
+            oldLine = oldLine + "borrowed";
+            String newContent = oldContent.replaceFirst(oldLine,newLine);
+            frBorrowing.close();
+            FileWriter fwBorrowing = new FileWriter("borrowings.txt"); 
+            fwBorrowing.write(newContent);
+            brBorrowing.close();
+            fwBorrowing.close();
+            writeBorrowing = true;
+        } catch (FileNotFoundException e){
+			printError("Borrowing's File not found");
+		} catch (IOException e){
+			printError(e.toString());
+		}	
+		        
+        try
+        {
+        	//Reading Book File
+			FileReader frBook = new FileReader("books.txt");
+			BufferedReader brBook = new BufferedReader(frBook);	 
+            String oldContent = "";                     
+            String line = brBook.readLine();             
+            while (line != null) 
+            {
+            	oldContent = oldContent + line + System.lineSeparator();                 
+                line = brBook.readLine();
+            }          
+            String oldLine = String.valueOf(book.getId()) + ":" + book.getTitle() + ":" + book.getAuthor() + ":";
+            String newLine = oldLine + String.valueOf(book.getStock());
+            oldLine = oldLine + String.valueOf(book.getStock()-1);
+            String newContent = oldContent.replaceFirst(oldLine,newLine);
+            frBook.close();
+            FileWriter fwBook = new FileWriter("books.txt"); 
+            fwBook.write(newContent);
+            brBook.close();
+            fwBook.close();
+            writeBook = true;
+        } catch (FileNotFoundException e){
+			printError("Book's File not found");
+		} catch (IOException e){
+			printError(e.toString());
+		}	
+		
+		if(writeBook && writeBorrowing) {
+			return true;
+		}
+		return false;	
 	}
 
 	@Override

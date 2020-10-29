@@ -68,9 +68,9 @@ public interface LibraryInterface {
 	 * Returns a list of books that have been borrowed by a reader.
 	 * 	 
 	 * @param reader			Reader to search
-	 * @return					List of all books borrowed by the reader
+	 * @return					String with the list of all books borrowed by the reader
 	 */
-	public List<BookInterface> booksBorrowed(ReaderInterface reader);
+	public String booksBorrowed(ReaderInterface reader);
 	
 	/**
 	 * Adds a new Reader to the file

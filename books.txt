@@ -1,10 +1,10 @@
 1:The Little Prince:Antoine de Saint-Exupéry:2
 2:Pet Sematary:Stephen King:5
 3:The Hunting Party:Lucy Foley:1
-4:The Guest List:Lucy Foley:2
+4:The Guest List:Lucy Foley:3
 5:The Hunger Games:Suzanne Collins:1
-6:The Element:Allaramo:0
-7:The Element:Alan Arango:17
+6:The Element:Allaramo:1
+7:The Element:Alan Arango:18
 8:A Promised Land:Barack Obama:1
 9:Pine:Francine Toon:2
 10:7 Ways:Jamie Oliver:1

@@ -315,7 +315,10 @@ public class Library implements LibraryInterface {
 				borrowing = b;
 				break;
 			}
-		}		
+		}
+		if(borrowing==null) {
+			return false;
+		}
 		//updates the stock in the list
 		for(BookInterface bb : books) {
 			if(bb.getId()==book.getId()) {
@@ -390,9 +393,22 @@ public class Library implements LibraryInterface {
 	}
 
 	@Override
-	public List<BookInterface> booksBorrowed(ReaderInterface reader) {
-		// TODO Auto-generated method stub
-		return null;
+	public String booksBorrowed(ReaderInterface reader) {
+		String list = "";
+		for(BorrowingInterface bb : borrowings) {
+			if(bb.getIdReader()==reader.getId()) {
+				for(BookInterface b : books) {
+					if(b.getId()==bb.getIdBook()) {
+						list = list + "Borrowing No." + bb.getId() + "> " + b.getTitle() + ", " + b.getAuthor() + "\n";
+						break;
+					}
+				}				
+			}
+		}
+		if(list.equals("")) {
+			list = "No books borrowed yet";
+		}
+		return list;
 	}
 
 	/**

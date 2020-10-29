@@ -1,3 +1,6 @@
-1:6:1:borrowed
-2:4:1:borrowed
-3:7:2:borrowed
+1:6:1:returned
+2:4:1:returned
+3:7:2:returned
+4:3:1:returned
+5:7:1:returned
+6:7:1:returned

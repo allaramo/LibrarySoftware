@@ -225,7 +225,18 @@ public class LibraryManagement implements LibraryManagementInterface{
 							case 2:
 								bookBorrowReturn(sc, library, "return");
 								break;
-							case 3:								
+							case 3:		
+								sc.nextLine();
+								System.out.println("Input the name: ");
+								String rName = sc.nextLine();
+								ReaderInterface reader;
+								List<ReaderInterface> searchReader = library.getReaders(rName, "");
+								if(searchReader.size()>0) {
+									reader = searchReader.get(0);
+									System.out.println(library.booksBorrowed(reader));
+								} else {
+									printError("Reader not found");
+								}
 								break;
 							case 4:
 								break;

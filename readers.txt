@@ -2,3 +2,6 @@
 2:Gabriel Monroy:Dublin 3
 3:Alan Arango:Dublin 22
 4:Miriam Monroy:Dublin 2
+5:Velimir Eldic:Dublin 22
+6:Bernarda Eldic:Dublin 22
+7:David McMahon:Dublin 11

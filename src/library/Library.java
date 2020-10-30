@@ -21,8 +21,12 @@ public class Library implements LibraryInterface {
 	private List<ReaderInterface> readers;
 	private List<BorrowingInterface> borrowings;
 	
-	/** Constructor for the Library
-	 * @param name
+	/**
+	 * Constructor
+	 * @param name			The name of the library
+	 * @param books			Books list
+	 * @param readers		Readers list
+	 * @param borrowings	Borrowing list
 	 */
 	public Library(String name, List<BookInterface> books, List<ReaderInterface> readers, List<BorrowingInterface> borrowings) {
 		super();
@@ -35,6 +39,11 @@ public class Library implements LibraryInterface {
 	/**
 	 * Gets all the books filtered by author, title, both or without filters.
 	 * It also allows to sort by id, title and author
+	 * 
+	 * @param author	Name of the author to search, it can be * to search all
+	 * @param title		Name of the book to search, it can be null to search all
+	 * @param sort		The field from which it will be sorted
+	 * @return			List of all books that match the search criteria with sorting or not
 	 */
 	@Override
 	public List<BookInterface> getBooks(String author, String title, String sort) {
@@ -70,7 +79,10 @@ public class Library implements LibraryInterface {
 	}
 	
 	/**
-	 * Sorting algorithm for Books
+	 * Sorts the Book by id, author or title without saving on a file
+	 * @param b						List to be sorted
+	 * @param sort					Field by which books will be sorted
+	 * @return						The new List of Books sorted
 	 */
 	@Override
 	public List<BookInterface> insertionSortBooks(List<BookInterface> b, String sort) {
@@ -107,7 +119,9 @@ public class Library implements LibraryInterface {
 	}
 	
 	/**
-	 * Sorts the Books by id, author and title but saves the sort into the file
+	 * Sorts the Books by id, author or title and saves it
+	 * @param sort				Field by which books will be sorted
+	 * @return					The new List of Books sorted
 	 */
 	@Override
 	public List<BookInterface> sortBooks(String sort){
@@ -133,8 +147,11 @@ public class Library implements LibraryInterface {
 	}
 
 	/**
-	 * Gets all the readers filtered or not by name.
-	 * It also allows to sort by id and name
+	 * Return a list of readers. 
+	 * 
+	 * @param reader	Name of the reader to search, it can be * to search all
+	 * @param sort		Field by which readers will be sorted
+	 * @return			List of all readers that match the search criteria with sorting or not
 	 */
 	@Override
 	public List<ReaderInterface> getReaders(String reader, String sort) {
@@ -156,20 +173,26 @@ public class Library implements LibraryInterface {
 	}
 	
 	/**
-	 * Sorting algorithm for Readers
+	 * Sorts the Reader by id or name without saving on a file
+	 * @param r 					List to be sorted
+	 * @param sort					Field by which books will be sorted
+	 * @return						The new List of Readers sorted
 	 */
 	@Override
 	public List<ReaderInterface> insertionSortReaders(List<ReaderInterface> r, String sort) {
+		//sorts only if sort is equal to ID or NAME
 		if(sort.equals("ID") || sort.equals("NAME")) {
 			for(int i=1; i<r.size();i++) {
 				ReaderInterface keyElement = r.get(i);
 				int position = i;
 				if(sort.equals("NAME")) {
+					//sorting by name
 					while(position>0 && r.get(position-1).getName().toUpperCase().compareTo(keyElement.getName().toUpperCase()) > 0) {
 						r.set(position, r.get(position-1));
 						position--;
 					}
 				} else {
+					//sorting by id
 					while(position>0 && r.get(position-1).getId() > keyElement.getId()) {
 						r.set(position, r.get(position-1));
 						position--;
@@ -182,7 +205,9 @@ public class Library implements LibraryInterface {
 	}
 
 	/**
-	 * Sorts the Readers by id or name but saves the sort into the file
+	 * Sorts the Readers by id or name and saves it
+	 * @param sort				Field by which readers will be sorted
+	 * @return					The new List of Readers sorted
 	 */
 	@Override
 	public List<ReaderInterface> sortReaders(String sort){
@@ -208,7 +233,9 @@ public class Library implements LibraryInterface {
 	}
 	
 	/**
-	 * Returns the name of the library
+	 * Return the name of the library
+	 * 
+	 * @return 	Name of the library
 	 */
 	@Override
 	public String getName() {		
@@ -216,7 +243,9 @@ public class Library implements LibraryInterface {
 	}
 
 	/**
-	 * Sets the name of the library
+	 * Set the name of the library.
+	 * 
+	 * @param name	The new name for the library
 	 */
 	@Override
 	public void setName(String name) {
@@ -224,7 +253,10 @@ public class Library implements LibraryInterface {
 	}
 
 	/**
-	 * Checks the stock of a Book to see if it is available for borrowing
+	 * Check if a book is available for borrowing according to its stock
+	 * 
+	 * @param book				Book to borrow
+	 * @return					true or false if available for borrowing
 	 */
 	@Override
 	public boolean checkStock(BookInterface book) {
@@ -235,7 +267,11 @@ public class Library implements LibraryInterface {
 	}
 
 	/**
-	 * Registers the borrowing and saves it on a File. Updates the stock in the Book's file
+	 * Register a borrowing of a book if available and saves it on a file.
+	 * 
+	 * @param book				Book to borrow
+	 * @param reader			Reader who borrows
+	 * @return					true or false if the book has been borrowed
 	 */
 	@Override
 	public boolean borrowBook(BookInterface book, ReaderInterface reader) {
@@ -248,7 +284,7 @@ public class Library implements LibraryInterface {
 				break;
 			}
 		}
-		
+		//flags to check if both files where updated correctly
 		boolean writeBook = false;
 		boolean writeBorrowing = false;
 		//writes in files
@@ -275,16 +311,19 @@ public class Library implements LibraryInterface {
 			FileReader frBook = new FileReader("books.txt");
 			BufferedReader brBook = new BufferedReader(frBook);	 
             String oldContent = "";                     
-            String line = brBook.readLine();             
+            String line = brBook.readLine();
+            //performs a copy of all the file
             while (line != null) 
             {
             	oldContent = oldContent + line + System.lineSeparator();                 
                 line = brBook.readLine();
             }          
+            //substitutes the content of the first line that matches
             String oldLine = String.valueOf(book.getId()) + ":" + book.getTitle() + ":" + book.getAuthor() + ":";
             String newLine = oldLine + String.valueOf(book.getStock());
             oldLine = oldLine + String.valueOf(book.getStock()+1);
             String newContent = oldContent.replaceFirst(oldLine,newLine);
+            //writes on file and closes
             frBook.close();
             FileWriter fwBook = new FileWriter("books.txt"); 
             fwBook.write(newContent);
@@ -296,7 +335,7 @@ public class Library implements LibraryInterface {
 		} catch (IOException e){
 			printError(e.toString());
 		}	
-		
+		//checks if both flags are true
 		if(writeBook && writeBorrowing) {
 			return true;
 		}
@@ -304,10 +343,15 @@ public class Library implements LibraryInterface {
 	}
 
 	/**
-	 * Registers the return of a book and saves it on a File. Updates the stock in the Book's file
+	 * Register the return of a book and updates the stock.
+	 * 
+	 * @param book				Book to return
+	 * @param reader			Reader who returns
+	 * @return					true or false if the book has been returned
 	 */
 	@Override
 	public boolean returnBook(BookInterface book, ReaderInterface reader) {
+		//updates the state of the borrowing to returned
 		BorrowingInterface borrowing = null;
 		for(BorrowingInterface b : borrowings) {
 			if(b.getIdBook() == book.getId() && b.getIdReader() == reader.getId() && b.getStatus().equals("borrowed")) {
@@ -326,7 +370,7 @@ public class Library implements LibraryInterface {
 				break;
 			}
 		}
-		
+		//flags to check if both files where updated correctly
 		boolean writeBook = false;
 		boolean writeBorrowing = false;
 		//writes in files
@@ -336,16 +380,19 @@ public class Library implements LibraryInterface {
 			FileReader frBorrowing = new FileReader("borrowings.txt");
 			BufferedReader brBorrowing = new BufferedReader(frBorrowing);	 
             String oldContent = "";                     
-            String line = brBorrowing.readLine();             
+            String line = brBorrowing.readLine();        
+            //peforms a copy of the whole file
             while (line != null) 
             {
             	oldContent = oldContent + line + System.lineSeparator();                 
                 line = brBorrowing.readLine();
             }          
+            //replaces the first line that matches with the new content
             String oldLine = String.valueOf(borrowing.getId()) + ":" + String.valueOf(borrowing.getIdBook()) + ":" + String.valueOf(borrowing.getIdReader()) + ":";
             String newLine = oldLine + "returned";
             oldLine = oldLine + "borrowed";
             String newContent = oldContent.replaceFirst(oldLine,newLine);
+            //writes on file and closes
             frBorrowing.close();
             FileWriter fwBorrowing = new FileWriter("borrowings.txt"); 
             fwBorrowing.write(newContent);
@@ -364,16 +411,19 @@ public class Library implements LibraryInterface {
 			FileReader frBook = new FileReader("books.txt");
 			BufferedReader brBook = new BufferedReader(frBook);	 
             String oldContent = "";                     
-            String line = brBook.readLine();             
+            String line = brBook.readLine(); 
+            //performs a whole copy of the content
             while (line != null) 
             {
             	oldContent = oldContent + line + System.lineSeparator();                 
                 line = brBook.readLine();
             }          
+            //replaces the first line that matches with the new value
             String oldLine = String.valueOf(book.getId()) + ":" + book.getTitle() + ":" + book.getAuthor() + ":";
             String newLine = oldLine + String.valueOf(book.getStock());
             oldLine = oldLine + String.valueOf(book.getStock()-1);
             String newContent = oldContent.replaceFirst(oldLine,newLine);
+            //writes on file and closes
             frBook.close();
             FileWriter fwBook = new FileWriter("books.txt"); 
             fwBook.write(newContent);
@@ -385,20 +435,28 @@ public class Library implements LibraryInterface {
 		} catch (IOException e){
 			printError(e.toString());
 		}	
-		
+		//check both flags if true
 		if(writeBook && writeBorrowing) {
 			return true;
 		}
 		return false;	
 	}
 
+	/**
+	 * Returns a list of books that have been borrowed by a reader.
+	 * 	 
+	 * @param reader			Reader to search
+	 * @return					String with the list of all books borrowed by the reader
+	 */
 	@Override
 	public String booksBorrowed(ReaderInterface reader) {
 		String list = "";
+		//reads the borrowing list to find the reader
 		for(BorrowingInterface bb : borrowings) {
 			if(bb.getIdReader()==reader.getId()) {
 				for(BookInterface b : books) {
 					if(b.getId()==bb.getIdBook()) {
+						//appends to string all lines, one per borrowing
 						list = list + "Borrowing No." + bb.getId() + "> " + b.getTitle() + ", " + b.getAuthor() + "\n";
 						break;
 					}
@@ -412,7 +470,10 @@ public class Library implements LibraryInterface {
 	}
 
 	/**
-	 * Inserts a new Reader into the list and into the file
+	 * Adds a new Reader to the file
+	 * @param name				Name of the reader
+	 * @param address			Address of the reader
+	 * @return					The ID of the new reader
 	 */
 	@Override
 	public int addReader(String name, String address) {
@@ -438,18 +499,11 @@ public class Library implements LibraryInterface {
 	}
 
 	/**
-	 * Prints in console an error
-	 * @param text	Error text to print
-	 */
-	@Override
-	public void printError(String text) {
-		System.out.println("--------------------------");
-		System.out.println("> Error: " + text);
-		System.out.println("--------------------------");
-	}
-
-	/**
-	 * Inserts a new Book into the list and into the file
+	 * Adds a new Reader to the file
+	 * @param title				Title name of the book
+	 * @param author			Name of the author
+	 * @param stock				Number of books available for borrowing
+	 * @return					The ID of the new reader
 	 */
 	@Override
 	public int addBook(String title, String author, int stock) {
@@ -472,5 +526,16 @@ public class Library implements LibraryInterface {
 			printError(e.toString());
 		}
 		return 0;
+	}
+	
+	/**
+	 * Prints a text in console for error handling
+	 * @param text	Text to Print
+	 */
+	@Override
+	public void printError(String text) {
+		System.out.println("--------------------------");
+		System.out.println("> Error: " + text);
+		System.out.println("--------------------------");
 	}
 }

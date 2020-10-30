@@ -1,5 +1,7 @@
 package interfaces;
 
+import java.util.Scanner;
+
 public interface LibraryManagementInterface {
 	/**
 	 * Shows the menu of the interface.
@@ -25,4 +27,11 @@ public interface LibraryManagementInterface {
 	 */	
 	public void printError(String text);
 	
+	/**
+	 * Handles the borrowing and returning of books
+	 * @param sc		Scanner for inputs
+	 * @param library	Library object
+	 * @param action	"borrow" or "return"
+	 */
+	public void bookBorrowReturn(Scanner sc, LibraryInterface library, String action);
 }

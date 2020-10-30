@@ -40,69 +40,111 @@ public class Book implements BookInterface {
 		this.stock = stock;
 	}
 
+	/**
+	 * Returns the id of the Book
+	 * 
+	 * @return 	the id of the book
+	 */
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
 		return id;
 	}
 
+	/**
+	 * Sets the id of the book
+	 * 
+	 * @param the id of the book
+	 */
 	@Override
 	public void setId(int id) {
-		// TODO Auto-generated method stub
 		this.id = id;
 	}
 
+	/**
+	 * Returns the current counter 
+	 * 
+	 * @return the counter of the class
+	 */
+	@Override
+	public void setCounter(int counter) {
+		Book.counter = counter;
+	}
+	
+	/**
+	 * Sets the counter for the id
+	 * 
+	 * @param the counter of the class
+	 */
+	@Override
+	public int getCounter() {
+		return counter;
+	}
+	/**
+	 * Returns the title name of the Book
+	 * 
+	 * @return 	the title of the book
+	 */
 	@Override
 	public String getTitle() {
-		// TODO Auto-generated method stub
 		return title;
 	}
 
+	/**
+	 * Sets the title of the book
+	 * 
+	 * @param the title of the book
+	 */
 	@Override
 	public void setTitle(String title) {
-		// TODO Auto-generated method stub
 		this.title = title;
 	}
 
+	/**
+	 * Returns the author of the Book
+	 * 
+	 * @return 	the author of the book
+	 */
 	@Override
 	public String getAuthor() {
-		// TODO Auto-generated method stub
 		return author;
 	}
 
+	/**
+	 * Sets the author of the book
+	 * 
+	 * @param the author of the book
+	 */
 	@Override
 	public void setAuthor(String author) {
-		// TODO Auto-generated method stub
 		this.author = author;
 	}
 
+	/**
+	 * Returns the stock of the Book
+	 * 
+	 * @return 	the stock of the book
+	 */
 	@Override
 	public int getStock() {
-		// TODO Auto-generated method stub
 		return stock;
 	}
 
+	/**
+	 * Sets the stock of the book
+	 * 
+	 * @param the stock of the book
+	 */
 	@Override
 	public void setStock(int stock) {
-		// TODO Auto-generated method stub
 		this.stock = stock;
 	}
-
+	
+	/**
+	 * Prints the object
+	 * @return 	String with all fields
+	 */
 	@Override
 	public String toString() {
 		return "\n" + id + ", " + title + ", " + author + ", " + stock;	
 	}
-
-	@Override
-	public void setCounter(int counter) {
-		// TODO Auto-generated method stub
-		Book.counter = counter;
-	}
-
-	@Override
-	public int getCounter() {
-		// TODO Auto-generated method stub
-		return counter;
-	}
-
 }

@@ -34,54 +34,90 @@ public class Reader implements ReaderInterface{
 		this.address = address;
 	}
 
+	/**
+	 * Returns the id of the reader
+	 * 
+	 * @return 	the id of the reader
+	 */
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
 		return id;
 	}
 
+	/**
+	 * Sets the id of the reader
+	 * 
+	 * @param the id of the reader
+	 */
 	@Override
 	public void setId(int id) {
-		// TODO Auto-generated method stub
 		this.id = id;
 	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		// TODO Auto-generated method stub
-		this.name = name;
-	}
-
-	@Override
-	public String getAddress() {
-		// TODO Auto-generated method stub
-		return address;
-	}
-
-	@Override
-	public void setAddress(String address) {
-		// TODO Auto-generated method stub
-		this.address = address;
-	}
-
+	
+	/**
+	 * Returns the current counter 
+	 * 
+	 * @return the counter of the class
+	 */
 	@Override
 	public int getCounter() {
-		// TODO Auto-generated method stub
 		return Reader.counter;
 	}
 
+	/**
+	 * Sets the counter for the id
+	 * 
+	 * @param the counter of the class
+	 */
 	@Override
 	public void setCounter(int counter) {
-		// TODO Auto-generated method stub
 		Reader.counter = counter;
 	}
 
+	/**
+	 * Returns the name of the reader
+	 * 
+	 * @return 	the name of the reader
+	 */
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Sets the name of the reader
+	 * 
+	 * @param the name of the reader
+	 */
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Returns the address of the reader
+	 * 
+	 * @return 	the address of the reader
+	 */
+	@Override
+	public String getAddress() {
+		return address;
+	}
+
+	/**
+	 * Sets the address of the reader
+	 * 
+	 * @param the address of the reader
+	 */
+	@Override
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	/**
+	 * Prints the object
+	 * @return 	String with all fields
+	 */
 	@Override
 	public String toString() {
 		return "\n" + id + ", " + name + ", " + address;

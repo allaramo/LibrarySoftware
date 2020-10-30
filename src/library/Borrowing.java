@@ -10,11 +10,11 @@ public class Borrowing implements BorrowingInterface {
 	private String status;
 	private static int counter = 1;	
 	
-	/**
-	 * @param id
-	 * @param idBook
-	 * @param idReader
-	 * @param status
+	/** Constructor with id
+	 * @param id		Id of the borrowing or transaction
+	 * @param idBook	Book's id
+	 * @param idReader	Reader's id
+	 * @param status	Status (borrowed, returned)
 	 */
 	public Borrowing(int id, int idBook, int idReader, String status) {
 		super();
@@ -27,10 +27,10 @@ public class Borrowing implements BorrowingInterface {
 		}		
 	}
 	
-	/**
-	 * @param idBook
-	 * @param idReader
-	 * @param status
+	/** Constructor without id	
+	 * @param idBook	Book's id
+	 * @param idReader	Reader's id
+	 * @param status	Status (borrowed, returned)
 	 */
 	public Borrowing(int idBook, int idReader, String status) {
 		super();
@@ -40,49 +40,84 @@ public class Borrowing implements BorrowingInterface {
 		this.status = status;
 	}
 
+	/**
+	 * Sets the id of the Book
+	 * @param id	The Id of the book
+	 */
 	@Override
 	public void setIdBook(int id) {
 		this.idBook = id;
 	}
 
+	/**
+	 * Returns the Id of the book
+	 * @return	Id of the book
+	 */
 	@Override
 	public int getIdBook() {
 		return idBook;
 	}
 
+	/**
+	 * Sets the id of the Reader
+	 * @param id	The Id of the reader
+	 */
 	@Override
 	public void setIdReader(int id) {
 		this.idReader = id;
 	}
 
+	/**
+	 * Returns the Id of the reader
+	 * @return	Id of the reader
+	 */
 	@Override
 	public int getIdReader() {
 		return idReader;
 	}
 
+	/**
+	 * Sets the id of the Borrowing
+	 * @param id	The Id of the borrowing
+	 */
 	@Override
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * Returns the Id of the borrowing
+	 * @return	Id of the borrowing
+	 */
 	@Override
 	public int getId() {
 		return id;
 	}
-
-	@Override
-	public int getCounter(int counter) {
-		return Borrowing.counter;
-	}
-
+	
+	/**
+	 * Sets the status of the Borrowing
+	 * @param status	The Status of the borrowing
+	 */
 	@Override
 	public void setStatus(String status) {
 		this.status = status;
 	}
 
+	/**
+	 * Returns the Status of the borrowing
+	 * @return	Status of the borrowing
+	 */
 	@Override
 	public String getStatus() {		
 		return status;
 	}
 
+	/**
+	 * Returns the counter
+	 * @return	The actual counter
+	 */
+	@Override
+	public int getCounter(int counter) {
+		return Borrowing.counter;
+	}
 }

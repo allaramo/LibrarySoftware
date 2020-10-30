@@ -6,16 +6,20 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import interfaces.BookInterface;
 import interfaces.BorrowingInterface;
 import interfaces.LibraryInterface;
 import interfaces.LibraryManagementInterface;
 import interfaces.ReaderInterface;
-import java.util.Scanner;
+
 
 public class LibraryManagement implements LibraryManagementInterface{
 	
+	/**
+	 * Prints headers
+	 */
 	@Override
 	public void printHeader(String text) {
 		System.out.print("\n");	
@@ -24,6 +28,9 @@ public class LibraryManagement implements LibraryManagementInterface{
 		System.out.println("***************************");
 	}
 	
+	/**
+	 * Prints errors
+	 */
 	@Override
 	public void printError(String text) {
 		System.out.println("--------------------------");
@@ -31,32 +38,46 @@ public class LibraryManagement implements LibraryManagementInterface{
 		System.out.println("--------------------------");
 	}
 	
+	/**
+	 * Handles the borrowing and return of books
+	 */
+	@Override
 	public void bookBorrowReturn(Scanner sc, LibraryInterface library, String action) {
+		//asks the title and author to the user
 		sc.nextLine();
 		System.out.println("Input Book's Title");								
 		String bTitle = sc.nextLine();
 		System.out.println("Input Author's Name");								
 		String bAuthor = sc.nextLine();
 		BookInterface book;
+		//tries to find the book with the given title and author
 		List<BookInterface> searchBook = library.getBooks(bAuthor, bTitle, "");
+		//if it is found it continues
 		if(searchBook.size()>0) {
 			book = searchBook.get(0);
+			//checks if the book is available for borrowing if the action is borrow
 			if((!library.checkStock(book) && action.equals("borrow"))) {
 				printError("Book not available for borrowing");					
 			} else {
-				System.out.println("Input Reader's ID or Name");
+				//if the book is available or instead we are returning the book we proceed
+				//to ask for the readers name who is borrowing or returning the book
+				System.out.println("Input Reader's Name");
 				String rName = sc.nextLine();
 				ReaderInterface reader;
+				//tries to find the reader
 				List<ReaderInterface> searchReader = library.getReaders(rName, "");
 				if(searchReader.size()>0) {
+					//if the reader is found proceeds
 					reader = searchReader.get(0);
 					if(action.equals("borrow")) {
+						//if the action is borrow calls the borrow action
 						if(library.borrowBook(book, reader)) {
 							System.out.println("Borrowing registered successfully");
 						} else {
 							printError("Borrowing not possible. Try again.");
 						}
 					} else {
+						//otherwise we are performing a return and we call the return action
 						if(library.returnBook(book, reader)) {
 							System.out.println("Book returned successfully");
 						} else {
@@ -72,6 +93,9 @@ public class LibraryManagement implements LibraryManagementInterface{
 		}	
 	}
 	
+	/**
+	 * Handles the menu and submenus and also the user's inputs
+	 */
 	@Override
 	public void menuLibrary(LibraryInterface library) {
 		Scanner sc = new Scanner(System.in);	
@@ -105,22 +129,26 @@ public class LibraryManagement implements LibraryManagementInterface{
 							suboption1 = sc.nextInt();
 							switch(suboption1) {
 							case 1:
+								//if we are searching we ask for the inputs
 								sc.nextLine();
 								System.out.println("Input the author: (input * for all authors)");
 								String author = sc.nextLine();
 								System.out.println("Input the title: (input * for all titles)");
 								String title = sc.nextLine();
 								System.out.println("Input the field by which you want to sort: (ID, TITLE, AUTHOR, NONE)");
-								String sort = sc.nextLine().toUpperCase();								
+								String sort = sc.nextLine().toUpperCase();	
+								//performs the search and prints results
 								System.out.println(library.getBooks(author, title, sort));
 								break;
 							case 2:
+								//if we are sorting calls the sorting algorithm and prints
 								sc.nextLine();
-								System.out.println("Input the field by which you want to sort: (ID, TITLE, AUTHOR, NONE)");
+								System.out.println("Input the field by which you want to sort: (ID, TITLE, AUTHOR)");
 								String bookSort = sc.nextLine().toUpperCase();		
 								System.out.println(library.sortBooks(bookSort));
 								break;
 							case 3:
+								//if we add a new book asks for the information
 								sc.nextLine();
 								System.out.println("Input the title: ");
 								String bTitle = sc.nextLine();
@@ -130,7 +158,8 @@ public class LibraryManagement implements LibraryManagementInterface{
 								int bStock = 1;
 								if(sc.hasNextInt()) {
 									bStock = sc.nextInt();
-								}								
+								}					
+								//adds the book
 								int rID = library.addBook(bTitle, bAuthor, bStock);
 								if(rID>0) {
 									System.out.println("Book added succesfully. ID: " + rID);
@@ -139,6 +168,7 @@ public class LibraryManagement implements LibraryManagementInterface{
 								}
 								break;
 							case 4:
+								//exit action
 								break;
 							default: 
 								printError("Invalid Option");					
@@ -166,25 +196,30 @@ public class LibraryManagement implements LibraryManagementInterface{
 							suboption2 = sc.nextInt();
 							switch(suboption2) {
 							case 1:
+								//if we are searching we ask for the inputs
 								sc.nextLine();
 								System.out.println("Input the name: (input * for all readers)");
 								String reader = sc.nextLine();								
 								System.out.println("Input the field by which you want to sort: (ID, NAME, NONE)");
 								String sort = sc.nextLine().toUpperCase();	
+								//performs the search and prints results
 								System.out.println(library.getReaders(reader, sort));
 								break;
 							case 2:
+								//if we are sorting calls the sorting algorithm and prints
 								sc.nextLine();
-								System.out.println("Input the field by which you want to sort: (ID, NAME, NONE)");
+								System.out.println("Input the field by which you want to sort: (ID, NAME)");
 								String readerSort = sc.nextLine().toUpperCase();		
 								System.out.println(library.sortReaders(readerSort));								
 								break;
 							case 3:
+								//if we add a new book asks for the information
 								sc.nextLine();
 								System.out.println("Input the name: ");
 								String rName = sc.nextLine();
 								System.out.println("Input the address: ");
 								String rAddress = sc.nextLine();
+								//adds the reader
 								int rID = library.addReader(rName, rAddress);
 								if(rID>0) {
 									System.out.println("Reader added succesfully. ID: " + rID);
@@ -193,6 +228,7 @@ public class LibraryManagement implements LibraryManagementInterface{
 								}
 								break;
 							case 4:
+								//exit action
 								break;
 							default: 
 								printError("Invalid Option");					
@@ -220,18 +256,23 @@ public class LibraryManagement implements LibraryManagementInterface{
 							suboption3 = sc.nextInt();
 							switch(suboption3) {
 							case 1:
+								//calls the borrowing algorithm
 								bookBorrowReturn(sc, library, "borrow");							
 								break;
 							case 2:
+								//calls the returning algorithm
 								bookBorrowReturn(sc, library, "return");
 								break;
 							case 3:		
+								//asks for the name of the reader to perform the search
 								sc.nextLine();
 								System.out.println("Input the name: ");
 								String rName = sc.nextLine();
 								ReaderInterface reader;
+								//tries to find the reader
 								List<ReaderInterface> searchReader = library.getReaders(rName, "");
 								if(searchReader.size()>0) {
+									//if it is found performs the search and prints
 									reader = searchReader.get(0);
 									System.out.println(library.booksBorrowed(reader));
 								} else {
@@ -239,6 +280,7 @@ public class LibraryManagement implements LibraryManagementInterface{
 								}
 								break;
 							case 4:
+								//exit action
 								break;
 							default: 
 								printError("Invalid Option");					
@@ -266,9 +308,12 @@ public class LibraryManagement implements LibraryManagementInterface{
 		sc.close();
 	}
 
+	/**
+	 * Handles the reading of files and setting of lists
+	 */
 	@Override
 	public LibraryInterface setupLibrary(String name) {
-		// TODO Auto-generated method stub	
+		//flags to indicate if a file was read correctly or not
 		boolean bBook = false;
 		boolean bReader = false;
 		boolean bBorrowing = false;
@@ -373,6 +418,7 @@ public class LibraryManagement implements LibraryManagementInterface{
 			return null;
 		}
 		
+		//if the 3 flags are true creates the library
 		if(bBook && bReader && bBorrowing) {
 			LibraryInterface library = new Library(name,books,readers,borrowings);
 			return library;
@@ -381,5 +427,4 @@ public class LibraryManagement implements LibraryManagementInterface{
 			return null;
 		}			
 	}
-
 }
